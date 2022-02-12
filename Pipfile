@@ -1,0 +1,21 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+pylint = "*"
+
+[packages]
+pylibftdi = "*"
+Adafruit_DHT = "*"
+noaa-sdk = "*"
+python-dotenv = "*"
+uvicorn = "*"
+fastapi = "*"
+dlipower = "*"
+psycopg2 = "*"
+pyserial = "*"
+
+[requires]
+python_version = "3.7"

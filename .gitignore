@@ -1,0 +1,9 @@
+greatsage.db
+.env
+__pycache__
+.vscode/settings.json
+/weather/__pycache__
+.vscode
+testfile.py
+logs/observations.json
+cronscripts
