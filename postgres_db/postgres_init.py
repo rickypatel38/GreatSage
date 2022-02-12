@@ -3,15 +3,12 @@ import psycopg2
 from dotenv import load_dotenv
 
 load_dotenv() #Load variables from .env file to environment
-#host = os.getenv("POST_HOST")
-#database = os.getenv("POSTGRES")
-#user = os.getenv("POST_USER")
-#pw  = os.getenv("POST_PW")
+host = os.getenv("POST_HOST")
+database = os.getenv("POSTGRES")
+user = os.getenv("POST_USER")
+pw  = os.getenv("POST_PW")
 
-host = "192.168.1.179"
-database = "greatsage"
-user = "pi"
-pw = "blueblue38"
+
 
 def connect():
     """ Connect to the PostgreSQL database server """
