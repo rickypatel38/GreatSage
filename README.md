@@ -50,7 +50,7 @@ Read up on how the sensors work from the links below. Both pH and EC sensors are
 * pH:                                        https://www.atlas-scientific.com/product_pages/probes/ph_probe.html
 * electric conductivity:                     https://www.atlas-scientific.com/product_pages/kits/ec_k1_0_kit.html 
 * Board for pH & EC for plug and play USB    https://www.atlas-scientific.com/product_pages/components/usb-iso.html
-* Humidity, Air Pressure, & Temperature:     https://atlas-scientific.com/probes/humidity-probe/ 
+* Humidity, Dew Point, & Temperature:     https://atlas-scientific.com/probes/humidity-probe/ 
 * UART USB Wiring Guide(for above sensor):   https://www.instructables.com/USB-to-UART-RS232Serial-Converter-MCP2200/ 
 * DS18B20 waterproof temperature sensor:     https://www.dfrobot.com/product-689.html 
 * DS18B20 temperature sensor wiring:         https://learn.adafruit.com/using-ds18b20-temperature-sensor-with-circuitpython/hardware
