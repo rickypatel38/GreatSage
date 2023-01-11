@@ -10,36 +10,30 @@ date = str(datetime.datetime.utcnow())
 device_list = None
 
 def read_tank_ec():
-    global device_list
-    if device_list is None:
-        device_list = get_ftdi_device_list()
-    while True:
-        index = 0
+    devices = list(get_ftdi_device_list())
+    input_val = 'R'
+    dev = None
+    for index in range(len(devices)):
         try:
-            dev = AtlasDevice(device_list[int(index)])
+            dev = AtlasDevice(devices[int(index)])
             break
-        except pylibftdi.FtdiError as e:
+        except (pylibftdi.FtdiError, Exception) as e:
             logging.error("Failure: {}, Date:{}".format(e, date))
-    dev.flush()
-    try:
-        input_val = 'R'
-        # pass commands straight to board
-        if len(input_val) == 0:
-            lines = dev.read_lines()
-            EC = lines[0]
-            ec = EC.replace('\r', '')
-        else:
+    if dev:
+        dev.flush()
+        try:
             dev.send_cmd(input_val)
-            time.sleep(1.3)
+            time.sleep(0.5)
             lines = dev.read_lines()
-            EC = lines[0]
-            ec = EC.replace('\r', '')
-    except:
-        logging.error("EC failure line 39, Date:{}".format(date))
-
-    if ec is not None:
-        print("EC:", ec)
-        logging.debug("EC:{}, DateTime:{}".format(ec, date))
-        return ec
+            ec = lines[0].replace('\r', '')
+        except Exception as e:
+            logging.error("EC failure line 39, Error:{}, Date:{}".format(e, date))
+        if ec is not None:
+            print("EC:", ec)
+            logging.debug("EC:{}, DateTime:{}".format(ec, date))
+            return ec
+        else:
+            logging.error("EC Failure Line 44: {}".format(date))
     else:
-        logging.error("EC Failure Line 44: {}".format(date))
+        print("Device Not Found")
+
