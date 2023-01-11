@@ -7,19 +7,22 @@ from pylibftdi import Driver
 class AtlasDevice(Device):
     def __init__(self, sn):
         Device.__init__(self, mode='t', device_id=sn)
-        self.term_string = "\r"
 
     def read_line(self, size=0):
         """
         taken from the ftdi library and modified to
         use the ezo line separator "\r"
         """
+        lsl = len('\r')
         line_buffer = []
         while True:
             next_char = self.read(1)
-            if next_char == self.term_string or (size > 0 and len(line_buffer) > size):
+            if next_char == '' or (size > 0 and len(line_buffer) > size):
                 break
             line_buffer.append(next_char)
+            if (len(line_buffer) >= lsl and
+                    line_buffer[-lsl:] == list('\r')):
+                break
         return ''.join(line_buffer)
 
     def read_lines(self):
@@ -30,7 +33,7 @@ class AtlasDevice(Device):
         try:
             while True:
                 line = self.read_line()
-                if line == self.term_string:
+                if not line:
                     break
                     self.flush_input()
                 lines.append(line)
@@ -47,7 +50,7 @@ class AtlasDevice(Device):
         :param cmd:
         :return:
         """
-        buf = cmd + self.term_string
+        buf = cmd + "\r"      # add carriage return
         try:
             self.write(buf)
             return True
@@ -60,6 +63,12 @@ def get_ftdi_device_list():
     return a list of lines, each a colon-separated
     vendor:product:serial summary of detected devices
     """
-    for vendor, product, serial in Driver().list_devices():
-        yield serial
+    dev_list = []
 
+    for device in Driver().list_devices():
+        # list_devices returns bytes rather than strings
+        dev_info = map(lambda x: x, device)
+        # device must always be this triple
+        vendor, product, serial = dev_info
+        dev_list.append(serial)
+    return dev_list

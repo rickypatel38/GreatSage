@@ -1,4 +1,9 @@
 import serial
+import sys
+import time
+import string 
+import os
+from serial import SerialException
 
 def read_line(ser):
     """

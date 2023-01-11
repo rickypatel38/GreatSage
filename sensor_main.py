@@ -18,29 +18,31 @@ def check_humidity():
     value = float(humidity.read_humidity())
     return value
 
-ec = check_ec()
-ph = check_ph()
-hum = check_humidity()
-ltemp = check_liquid_temperature()
-getrequests.update_thing_speak(ph, ec, ltemp, hum)
+def read_all_sensors():
+    ec = check_ec()
+    ph = check_ph()
+    hum = check_humidity()
+    ltemp = check_liquid_temperature()
+    getrequests.update_thing_speak(ph, ec, ltemp, hum)
 
-target_pH = 6.5
+read_all_sensors()
+#target_pH = 6.5
 
 # Read pH value from sensor
-pH = check_ph()
+#pH = check_ph()
 
 # Loop until target pH is reached
-while pH < target_pH:
-    flag = False
+#while pH < target_pH:
+#    flag = False
     # Start pump
-    getrequests.start_pump()
+#    getrequests.start_pump()
     # Read pH value from sensor
-    ph = check_ph()
-    if abs(ph_value - pH) > 0.1:
-        getrequests.update_thing_speak_ph(ph_value)
-        pH = ph_value
+#    ph = check_ph()
+#    if abs(ph_value - pH) > 0.1:
+#        getrequests.update_thing_speak_ph(ph_value)
+#        pH = ph_value
     # Wait 1 minute
-    time.sleep(180)
+#    time.sleep(180)
 
 # Stop pump
-getrequests.stop_pump()
+#getrequests.stop_pump()
