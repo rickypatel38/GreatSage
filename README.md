@@ -1,4 +1,6 @@
 # README #
+### Live Data Feed:
+https://thingspeak.com/channels/1785291
 
 ### What Is GreatSage?  
 The purpose of GreatSage is to provide an automated greenhouse monitoring system. The sensors in this project are utilized in order to provide insight into the conditions of the plant growing environment. The sensors will also provide insight in to the pH, electric conductivity, humidity and liquid temperature of the environment. The power for this equipment will be controlled via a "web-power switch" so that the user can control the greenhouse equipment remotely at any given time. 

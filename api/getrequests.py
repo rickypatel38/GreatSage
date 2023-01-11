@@ -9,8 +9,8 @@ iot_key = os.getenv("THINGSPEAK_KEY")
 switch_key = os.getenv("DLI_PASS")
 powerSwitch = "192.168.0.100"
 
-def update_thing_speak(ph, ec, temp, hum):
-    url_string = "https://api.thingspeak.com/update?api_key="+iot_key+"&field1="+str(ph)+"&field2="+str(ec)+"&field3="+str(temp)+"&field4="+str(hum)
+def update_thing_speak(ph, ec, temp, hum, vpd):
+    url_string = "https://api.thingspeak.com/update?api_key="+iot_key+"&field1="+str(ph)+"&field2="+str(ec)+"&field3="+str(temp)+"&field4="+str(hum)+"&field5="+str(vpd)
     r = requests.get(url=url_string)
     data = r.json()
     return data
