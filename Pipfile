@@ -14,8 +14,6 @@ python-dotenv = "*"
 uvicorn = "*"
 fastapi = "*"
 dlipower = "*"
-psycopg2 = "*"
 pyserial = "*"
 
 [requires]
-python_version = "3.7"

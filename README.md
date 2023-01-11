@@ -1,48 +1,19 @@
 # README #
 
 ### What Is GreatSage?  
-The purpose of GreatSage is to provide an automated greenhouse monitoring system. The sensors in this project are utilized in order to provide insight into the conditions of the plant growing environment. Outside weather conditions data is retrieved from the NOAA API service. Overtime a correaltion between environmental conditions within the greenhouse and the weather outside can be made. This correlation should in theory provide a "predictive analytics" for the user to be able to predict conditions inside the greenhouse based on future forecast. It should also provide insight into the amount of energy expenditure that may occur, based on the upcoming weather, in order to maintain ideal growing conditions within the greenhouse.
-The sensors in this system should provide enough data in order to calculate information such as the Vapor Pressure Deficit (VPD) in the growing environment. The sensors will also provide insight in to the pH, EC, and liquid temperature of the grow solution. The power for this equipment will be controlled via a "web-power switch" so that the user can control the greenhouse equipment remotely at any given time. 
+The purpose of GreatSage is to provide an automated greenhouse monitoring system. The sensors in this project are utilized in order to provide insight into the conditions of the plant growing environment. The sensors will also provide insight in to the pH, electric conductivity, humidity and liquid temperature of the environment. The power for this equipment will be controlled via a "web-power switch" so that the user can control the greenhouse equipment remotely at any given time. 
+The sensors in this system should provide enough data in order to calculate information such as the Vapor Pressure Deficit (VPD) in the growing environment. 
 
 ### Future Updates  
-Future goals for this project includes developing a system which will control the water pumps, chemical injections into the water. A CO2 sensor will also be added to this project in order to monitor CO2 levels in the greenhouse for plant photosynthesis and should allow for stomal opening calculations to occur. 
+
 
 ### Data Points  
 * EC (Electric Conductivity)   
 * Ambient Humidity
-* Ambient Temperature
 * Liquid Temperature 
 * pH
-* PAR (Photo Active Radiation)
 
-* Adding OpenWeather API funcitonality in order to have redunancy for when NOAA API is down. 
-        * Weather Conditions Description
-        * Feels Like
-        * Humidity
-        * Pressure
-        * Temperature
-        * Temperature Max
-        * Temperature Min
-        * Wind Direction (Degrees)
-        * Wind Speed
-        * Cloud Coverage
-        * Datetime
 
-* Local weather conditions utilizing NOAA SDK: (National Ocean and Atmospheric Administration)
-    * temperature         
-    * dewpoint        
-    * windDirection   
-    * windSpeed       
-    * windGust        
-    * barometricPressure 
-    * seaLevelPressure   
-    * visibility         
-    * max temp in past 24hrs          
-    * min temp in past 24hrs                  
-    * relativeHumidity   
-    * windChill          
-    * heatIndex          
-    * cloudLayer
 
 ### Hardware / Sensors ###
 Read up on how the sensors work from the links below. Both pH and EC sensors are converted from EZO pins to USB data there is a github link on the atlas scientific website. 
@@ -65,14 +36,13 @@ Read up on how the sensors work from the links below. Both pH and EC sensors are
                                                 location of USB 0. 
 
 ### Architecture ###
-* Python v3.7
+* Python v3.9
 * SQlite3 is the Database.
 * Fast API is the API Service
 * Pipenv is the virtual development environmnet. (No need to install dependencies for this project on your OS when you can install a virtual env.)
 * DB SQLite3:                               https://www.sqlite.org/index.html
 * Fast API:                                 https://github.com/tiangolo/fastapi
 * Pipenv:                                   https://github.com/pypa/pipenv 
-* NOAA SDK:                                 https://github.com/paulokuong/noaa 
 
 ### How do I get set up? ###
 
@@ -81,16 +51,11 @@ Read up on how the sensors work from the links below. Both pH and EC sensors are
 * Database configuration: Run the db_init.py file within the "sqlite" folder. This will create your sqlite database with the approriate tables. 
 * Deployment instructions: Once all the sensors have been wired run the sensor_main.py file in order to store data from the sensors in to the SQLite DB as a test to see if the sensors are properly connected. 
 * A .env file with the variables below is required: 
-    * DB_PATH = 'your\path\to\greatsage.db'
-    * LOG_PATH = 'your\path\to\logs'
-    * API_KEY = your openweather API Key 
     * DLI_PASS = your webpower switch password for remote control of equipment
-    * POSTGRES = "your PostgresDB Name"
-    * POST_PW = "your PostgresDB Password"
-    * POST_USER = "your PostgresDB username"
-    * POST_HOST = "your PostgresDB address"
+    * THINGSPEAK_KEY = apikey for thingspeak
+
 * Run the api_main.py file in order to run the API Service on 0.0.0.0 (your local area network).  
-* All datetime data is stored in UTC format #date = str(datetime.datetime.utcnow()).
+
 
 ### Security ### 
 * ToDo: Input validation on all API Endpoints (regex reccomended).
@@ -105,13 +70,11 @@ Read up on how the sensors work from the links below. Both pH and EC sensors are
     * pH Sensor Error Catching / Logging
     * EC Sensor Error Catching / Logging
     * DS18B20 Sensor Error Catching / Logging
-    * DHT22 Sensor Error Catching / Logging 
     * WebPowerSwitch Error Catching / Logging 
-    * Create a "isDown" table to have status of each sensor. 
-    * Create an alerting system that alerts if the Raspberry Pi itself is down. 
+    * Create an alerting system that alerts if the Raspberry Pi or a sensor is down. 
 
 ### Features ### 
-* Log when Powerswitch is turned off and on in DB. 
+* Log when Powerswitch is turned off and on in ThingSpeak. 
 * Add a "tags" for the powerswitch number i.e. Switch 1 is "Main Lights"
 
 
@@ -126,3 +89,8 @@ Read up on how the sensors work from the links below. Both pH and EC sensors are
 * Repo owner or admin:  Ricky A. Patel
 * Email:                RP2992@outlook.com 
 * Linkedin:             https://www.linkedin.com/in/rickypatel38/ 
+
+
+### Notes When Starting ### 
+* Pipenv install --skip-lock will save a lot of headaches the pipfile.lock is bugged for this project. 
+* Sudo raspi-config interface options enable 1 wire support in order to read from ds18b20 sensor. 

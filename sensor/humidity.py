@@ -1,17 +1,23 @@
-#!/usr/bin/python
-
 import serial
 import sys
 import time
 import string 
+import os
 from serial import SerialException
 
-usbport = '/dev/ttyUSB0' # change to match your pi's setup 
+
+# Find the symbolic link for the USB serial device with the desired name in the /dev/serial/by-id directory
+serial_by_id_path = os.path.join("/dev", "serial", "by-id")
+for filename in os.listdir(serial_by_id_path):
+    if filename == "usb-Silicon_Labs_CP2102_USB_to_UART_Bridge_Controller_0001-if00-port0":
+        serial_path = os.path.join(serial_by_id_path, filename)
+        break
+
+ 
 
 def read_line(ser):
     """
-    taken from the ftdi library and modified to 
-    use the ezo line separator "\r"
+    Read a line from the serial device, ending in a line separator "\r".
     """
     lsl = len(b'\r')
     line_buffer = []
@@ -27,7 +33,7 @@ def read_line(ser):
     
 def read_lines(ser):
     """
-    also taken from ftdi lib to work with modified readline function
+    Read multiple lines from the serial device, using the modified read_line function.
     """
     lines = []
     try:
@@ -45,7 +51,7 @@ def read_lines(ser):
 
 def send_cmd(cmd, ser):
     """
-    Send command to the Atlas Sensor.
+    Send command to the device.
     Before sending, add Carriage Return at the end of the command.
     :param cmd:
     :return:
@@ -58,21 +64,18 @@ def send_cmd(cmd, ser):
         print ("Error, ", e)
         return None
             
-def get_humidity():
-
+def read_humidity():
     try:
-        ser = serial.Serial(usbport, 9600, timeout=0)
+        ser = serial.Serial(serial_path, 9600, timeout=0)
     except serial.SerialException as e:
         print( "Error, ", e)
         sys.exit(0)
 
-    while True:
-        input_val = "R"
-        send_cmd(input_val, ser)
-        time.sleep(1.3)
-        lines = read_lines(ser)
-        for i in range(len(lines)):
-            #print( lines[i].decode('utf-8'))
-            val = lines[i].decode('utf-8')
-        return val
-           
+    input_val = "R"
+    send_cmd(input_val, ser)
+    time.sleep(1.3)
+    lines = read_lines(ser)
+    for i in range(len(lines)):
+        val = lines[i].decode('utf-8')
+    print("Humidity:", val) 
+    return val
